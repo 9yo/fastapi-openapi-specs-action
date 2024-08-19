@@ -2,6 +2,7 @@ import importlib
 import json
 import os
 import sys
+from typing import Callable
 
 import yaml
 from fastapi.openapi.utils import get_openapi
@@ -41,6 +42,10 @@ except Exception as e:
 
 # Imports the FastAPI application.
 app = getattr(mod, obj)
+
+# Support get_app style FastAPI applications.
+if isinstance(app, Callable):
+    app = app()
 
 # Iterates through all of the routes and finds the correct version.
 if version:
